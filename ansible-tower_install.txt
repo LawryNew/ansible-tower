@@ -1,0 +1,91 @@
+###用新系统安装 4G mem 最少
+###删掉所有 yum.repos.d里的所有源  做好备份  把 ansible-tower.repo添加进去 只留这一个源  再启动  setup.sh  否则 rpm安装会报错 ，，太多源也会冲突
+
+
+wget https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-3.7.1-1.tar.gz
+
+tar -zxvf ansible-tower-setup-3.7.1-1.tar.gz
+
+cd ansible-tower-setup-3.7.1-1
+
+
+### 配置 inventroy
+###admin_password="admin"#
+###pg_password="admin"
+
+
+sh setup.sh  
+
+
+
+###安装成功后
+
+ansible-tower-service  start
+
+
+###破解
+
+
+###安装反编译模块
+pip3 install uncompyle6
+
+
+cd /var/lib/awx/venv/awx/lib/python3.6/site-packages/tower-license
+uncompyle6 __init__.pyc >__init__.py
+rm -f __init__.pyc __init__.pyo
+
+
+###修改文件
+vim __init__.py
+
+
+1.
+ def _check_cloudforms_subscription(self):
+ # 添加下面一行直接返回 True
+ 82         return True 
+
+2.
+
+def _generate_cloudforms_subscription(self):
+
+修改 license_date=253370764800L 为 license_date=253370764800
+###默认 没有L 就不管
+
+
+
+修改完保存重新编译：
+
+python3.6 -m py_compile __init__.py
+python3.6 -O -m py_compile __init__.py
+
+
+编译完 重启下：
+ansible-tower-service restart
+
+
+
+###破解成功标志：
+
+打开https://your_ip/#/license ,发现"Hosts Available"变成了9999999台,说明破解成功,如下
+可用台数 无限
+
+
+
+查看日志：
+
+/var/log/tower/setup-***********.log           # 安装报错
+tail -100f /var/log/tower/tower.log
+tail -100f /var/log/supervisor/supervisord.log
+
+
+
+
+
+
+
+
+
+
+
+
+
