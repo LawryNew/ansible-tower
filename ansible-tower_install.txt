@@ -1,5 +1,16 @@
-###用新系统安装 4G mem 最少
-###删掉所有 yum.repos.d里的所有源  做好备份  把 ansible-tower.repo添加进去 只留这一个源  再启动  setup.sh  否则 rpm安装会报错 ，，太多源也会冲突
+安装破解url:
+https://www.cnblogs.com/jians/p/11940768.html
+
+
+guide url:
+https://docs.ansible.com/ansible-tower/latest/html/userguide/
+
+
+关闭selinux
+stop firewalld
+
+
+yum -y install ansible 
 
 
 wget https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-3.7.1-1.tar.gz
